@@ -33,7 +33,7 @@ namespace DronesWebApi.Models.Drone.Commands.CreateDroneCommand
             var model = _unitOfWork.DroneModels.Get(request.ModelId);
 
             if (model == null)
-                throw new BadRequestException($"Drone Model with id '{request.ModelId}' does not exists");
+                throw new NotFoundException($"Drone Model with id '{request.ModelId}' does not exists");
 
             var entity = new Core.Domain.Drone()
             {

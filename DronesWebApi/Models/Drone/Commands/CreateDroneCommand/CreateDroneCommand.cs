@@ -3,11 +3,12 @@ using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DronesWebApi.Commons.Exceptions;
 using DronesWebApi.Core.Domain.Enums;
 
 namespace DronesWebApi.Models.Drone.Commands.CreateDroneCommand
 {
-    public class CreateDroneCommand : IRequest<CreateCommandResponse>
+    public class CreateDroneCommand : IRequest<CreateDroneCommandResponse>
     {
         public string SerialNumber { get; set; }
 
@@ -18,7 +19,7 @@ namespace DronesWebApi.Models.Drone.Commands.CreateDroneCommand
         public int BatteryCapacityInPercentage { get; set; }
     }
 
-    public class CreateDroneCommandHandler : IRequestHandler<CreateDroneCommand, CreateCommandResponse>
+    public class CreateDroneCommandHandler : IRequestHandler<CreateDroneCommand, CreateDroneCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -27,8 +28,13 @@ namespace DronesWebApi.Models.Drone.Commands.CreateDroneCommand
             _unitOfWork = unitOfWork;
         }
 
-        public Task<CreateCommandResponse> Handle(CreateDroneCommand request, CancellationToken cancellationToken)
+        public Task<CreateDroneCommandResponse> Handle(CreateDroneCommand request, CancellationToken cancellationToken)
         {
+            var model = _unitOfWork.DroneModels.Get(request.ModelId);
+
+            if (model == null)
+                throw new BadRequestException($"Drone Model with id '{request.ModelId}' does not exists");
+
             var entity = new Core.Domain.Drone()
             {
                 SerialNumber = request.SerialNumber,
@@ -42,7 +48,7 @@ namespace DronesWebApi.Models.Drone.Commands.CreateDroneCommand
 
             _unitOfWork.Complete();
 
-            return Task.FromResult(new CreateCommandResponse(){ Id = entity.Id });
+            return Task.FromResult(new CreateDroneCommandResponse(){ Id = entity.Id });
         }
     }
 }

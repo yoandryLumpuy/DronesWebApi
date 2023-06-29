@@ -1,6 +1,6 @@
 ﻿namespace DronesWebApi.Models.Drone.Commands.CreateDroneCommand
 {
-    public class CreateCommandResponse
+    public class CreateDroneCommandResponse
     {
         public int Id { get; set; }
     }

@@ -47,7 +47,6 @@ namespace DronesWebApi
                 dbContextOptionBuilder.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
 
-
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddMediatR(Assembly.GetExecutingAssembly());

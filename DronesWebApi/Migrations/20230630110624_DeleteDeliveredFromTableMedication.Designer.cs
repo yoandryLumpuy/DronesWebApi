@@ -3,14 +3,16 @@ using System;
 using DronesWebApi.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DronesWebApi.Migrations
 {
     [DbContext(typeof(DronesContext))]
-    partial class DronesContextModelSnapshot : ModelSnapshot
+    [Migration("20230630110624_DeleteDeliveredFromTableMedication")]
+    partial class DeleteDeliveredFromTableMedication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,12 +82,6 @@ namespace DronesWebApi.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DatetimeDelivery")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("DeliveredByDroneId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("DroneId")
                         .HasColumnType("INTEGER");
 
@@ -98,8 +94,6 @@ namespace DronesWebApi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Code");
-
-                    b.HasIndex("DeliveredByDroneId");
 
                     b.HasIndex("DroneId");
 
@@ -119,23 +113,15 @@ namespace DronesWebApi.Migrations
 
             modelBuilder.Entity("DronesWebApi.Core.Domain.Medication", b =>
                 {
-                    b.HasOne("DronesWebApi.Core.Domain.Drone", "DeliveredByDrone")
-                        .WithMany("DeliveredMedications")
-                        .HasForeignKey("DeliveredByDroneId");
-
                     b.HasOne("DronesWebApi.Core.Domain.Drone", "Drone")
                         .WithMany("LoadedMedications")
                         .HasForeignKey("DroneId");
-
-                    b.Navigation("DeliveredByDrone");
 
                     b.Navigation("Drone");
                 });
 
             modelBuilder.Entity("DronesWebApi.Core.Domain.Drone", b =>
                 {
-                    b.Navigation("DeliveredMedications");
-
                     b.Navigation("LoadedMedications");
                 });
 

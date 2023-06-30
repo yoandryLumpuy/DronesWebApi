@@ -1,4 +1,6 @@
-﻿namespace DronesWebApi.Core.Domain
+﻿using System;
+
+namespace DronesWebApi.Core.Domain
 {
     public class Medication
     {
@@ -8,8 +10,11 @@
 
         public  int WeightInGrams { get; set; }
 
-        public bool Delivered { get; set; }
-
         public Drone  Drone { get; set; }
+
+
+        public DateTime? DatetimeDelivery { get; set; }
+
+        public Drone DeliveredByDrone { get; set; }
     }
 }

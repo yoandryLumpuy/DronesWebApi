@@ -1,26 +1,19 @@
+using DronesWebApi.Commons.Behaviors;
+using DronesWebApi.Commons.Middlewares;
+using DronesWebApi.Core;
+using DronesWebApi.Core.Repositories;
+using DronesWebApi.Persistence;
+using DronesWebApi.Persistence.Repositories;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DronesWebApi.Persistence;
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using DronesWebApi.Commons.Behaviors;
-using FluentValidation;
-using MediatR;
-using DronesWebApi.Commons.Middlewares;
-using DronesWebApi.Core.Repositories;
-using DronesWebApi.Core;
-using DronesWebApi.Persistence.Repositories;
 
 namespace DronesWebApi
 {
@@ -31,7 +24,7 @@ namespace DronesWebApi
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile(path: "appsettings.json", optional: false)
-                .AddJsonFile(path: $"appsetting.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile(path: $"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -49,7 +42,7 @@ namespace DronesWebApi
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

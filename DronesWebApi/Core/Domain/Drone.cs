@@ -20,6 +20,9 @@ namespace DronesWebApi.Core.Domain
 
         public EDroneState State { get; set; }
 
+
         public virtual ICollection<Medication> LoadedMedications { get; set; }
+
+        public virtual ICollection<Medication> DeliveredMedications { get; set; }
     }
 } 

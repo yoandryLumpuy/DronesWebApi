@@ -16,6 +16,12 @@ namespace DronesWebApi.Persistence.EntityConfigurations
             builder.HasOne(m => m.Drone)
                 .WithMany(m => m.LoadedMedications)
                 .IsRequired(false);
+
+            builder.HasOne(m => m.DeliveredByDrone)
+                .WithMany(d => d.DeliveredMedications)
+                .IsRequired(false);
+
+
         }
     }
 }

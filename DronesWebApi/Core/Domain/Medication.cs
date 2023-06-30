@@ -10,11 +10,11 @@ namespace DronesWebApi.Core.Domain
 
         public  int WeightInGrams { get; set; }
 
-        public Drone  Drone { get; set; }
+        public virtual Drone  Drone { get; set; }
 
 
         public DateTime? DatetimeDelivery { get; set; }
 
-        public Drone DeliveredByDrone { get; set; }
+        public virtual Drone DeliveredByDrone { get; set; }
     }
 }

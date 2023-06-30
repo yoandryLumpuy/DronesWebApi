@@ -12,7 +12,7 @@ namespace DronesWebApi.Core.Domain
 
         public int ModelId { get; set; }
 
-        public DroneModel Model { get; set; }
+        public virtual DroneModel Model { get; set; }
 
         public int WeightLimitInGrams { get; set; }
 

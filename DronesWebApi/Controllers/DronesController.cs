@@ -1,27 +1,38 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DronesWebApi.Models.Drone.Commands.CreateDroneCommand;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Threading.Tasks;
 using System.Threading;
-using DronesWebApi.Commons.Responses;
-using DronesWebApi.Models.Drone.Commands.CreateDroneCommand;
-using DronesWebApi.Models.DroneModel.Commands.CreateDroneModelCommand;
+using System.Threading.Tasks;
+using DronesWebApi.Commons.Models;
 
 namespace DronesWebApi.Controllers
 {
     public class DronesController : ApiControllerBase
     {
         [HttpPost]
-        [ProducesResponseType(typeof(SuccessResponse<>), (int) HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.UnprocessableEntity)]
-        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.InternalServerError)]
-        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(Result<>), (int) HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.UnprocessableEntity)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> CreateAsync(CreateDroneCommand request, CancellationToken cancellation)
         {
             var result = await Mediator.Send(request, cancellation).ConfigureAwait(false);
 
-            return Ok(new SuccessResponse<CreateDroneCommandResponse>(result));
+            return Ok(Result.Success(result));
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.UnprocessableEntity)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> GetAsync(CreateDroneCommand request, CancellationToken cancellation)
+        {
+            var result = await Mediator.Send(request, cancellation).ConfigureAwait(false);
+
+            return Ok(Result.Success(result));
         }
     }
 }

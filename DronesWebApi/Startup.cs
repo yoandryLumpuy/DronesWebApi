@@ -35,18 +35,7 @@ namespace DronesWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DronesContext>(dbContextOptionBuilder =>
-            {
-                dbContextOptionBuilder.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
-            services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped( typeof(IRepository<>), typeof(Repository<>) );
+            services.AddApplication(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

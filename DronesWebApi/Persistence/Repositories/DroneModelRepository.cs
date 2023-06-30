@@ -9,6 +9,6 @@ namespace DronesWebApi.Persistence.Repositories
         public DroneModelRepository(DbContext context) : base(context)
         { }
 
-
+        private DronesContext DronesContext => Context as DronesContext;
     }
 }

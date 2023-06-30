@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DronesWebApi.Commons.Exceptions;
+using DronesWebApi.Commons.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System;
-using DronesWebApi.Commons.Exceptions;
-using DronesWebApi.Commons.Responses;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DronesWebApi.Commons.Middlewares
 {
@@ -34,7 +33,7 @@ namespace DronesWebApi.Commons.Middlewares
         {
             var statusCode = GetStatusCode(exception);
 
-            var response = new ErrorResponse(statusCode, exception.Message, GetErrors(exception));
+            var response = Result.Failure(GetErrors(exception));
 
             httpContext.Response.ContentType = "application/json";
 

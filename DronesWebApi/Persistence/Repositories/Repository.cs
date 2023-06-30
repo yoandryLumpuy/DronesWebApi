@@ -21,6 +21,11 @@ namespace DronesWebApi.Persistence.Repositories
             return Context.Set<TEntity>().Find(keyObjects);
         }
 
+        public IPaginatedList<TEntity> GetPaginated(int pageIndex, int pageSize)
+        {
+            return PaginatedList<TEntity>.CreateAsync(source: Context.Set<TEntity>().AsQueryable(), pageIndex, pageSize).Result;
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return Context.Set<TEntity>().ToList();

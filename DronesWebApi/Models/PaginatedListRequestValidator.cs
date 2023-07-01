@@ -2,9 +2,9 @@
 
 namespace DronesWebApi.Models
 {
-    public class PaginatedListRequestValidator: AbstractValidator<PaginatedListRequest>
+    public abstract class PaginatedListRequestValidator<T>: AbstractValidator<T> where T: PaginatedListRequest
     {
-        public PaginatedListRequestValidator()
+        protected PaginatedListRequestValidator()
         {
             RuleFor(x => x.PageNumber)
                 .GreaterThanOrEqualTo(1).WithMessage("PageNumber at least greater than or equal to 1.");

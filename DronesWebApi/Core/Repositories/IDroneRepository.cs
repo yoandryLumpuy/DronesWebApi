@@ -8,5 +8,7 @@ namespace DronesWebApi.Core.Repositories
         IPaginatedList<Drone> GetPaginatedWithLoadedMedications(int pageIndex, int pageSize);
 
         Drone GetWithLoadedMedications(int id);
+
+        int TotalLoadInGrams(int id);
     }
 }

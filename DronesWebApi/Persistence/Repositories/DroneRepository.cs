@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DronesWebApi.Core.Domain;
 using DronesWebApi.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,14 @@ namespace DronesWebApi.Persistence.Repositories
         }
 
         public Drone GetWithLoadedMedications(int id) => 
-            DronesContext.Drones.Include(d => d.LoadedMedications).SingleOrDefault(d => d.Id == id);
+            DronesContext.Drones.Include(d => d.LoadedMedications).FirstOrDefault(d => d.Id == id);
+
+        public int TotalLoadInGrams(int id)
+        {
+            var drone = GetWithLoadedMedications(id) ?? new Drone(){ LoadedMedications = new List<Medication>()};
+
+            return drone.LoadedMedications.Sum(m => m.WeightInGrams);
+        }
 
         private DronesContext DronesContext => Context as DronesContext;
     }

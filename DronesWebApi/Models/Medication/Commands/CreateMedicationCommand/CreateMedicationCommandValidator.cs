@@ -55,7 +55,7 @@ namespace DronesWebApi.Models.Medication.Commands.CreateMedicationCommand
                     var drone = unitOfWork.Drones.Get(createMedicationCommand.DroneId.Value);
 
                     return unitOfWork.Drones.TotalLoadInGrams(createMedicationCommand.DroneId.Value) +
-                        createMedicationCommand.WeightInGrams > drone.WeightLimitInGrams;
+                           createMedicationCommand.WeightInGrams <= drone.WeightLimitInGrams;
 
                 }).WithMessage(createMedicationCommand => $"Weight limit is exceeded for Drone with Id '{createMedicationCommand.DroneId.Value}'");
         }

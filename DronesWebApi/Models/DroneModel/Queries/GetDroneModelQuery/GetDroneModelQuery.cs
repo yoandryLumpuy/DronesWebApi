@@ -27,9 +27,6 @@ namespace DronesWebApi.Models.DroneModel.Queries.GetDroneModelQuery
         {
             var droneModel = _unitOfWork.DroneModels.Get(request.ModelId);
 
-            if (droneModel == null)
-                throw new NotFoundException(message: $"Drone Model with id '{request.ModelId}' was not found");
-
             return Task.FromResult(_mapper.Map<DroneModelDto>(droneModel));
         }
     }

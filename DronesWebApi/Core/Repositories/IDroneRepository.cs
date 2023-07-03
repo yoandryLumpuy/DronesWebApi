@@ -1,4 +1,5 @@
-﻿using DronesWebApi.Core.Domain;
+﻿using System.Collections.Generic;
+using DronesWebApi.Core.Domain;
 using DronesWebApi.Persistence.Repositories;
 
 namespace DronesWebApi.Core.Repositories
@@ -8,6 +9,8 @@ namespace DronesWebApi.Core.Repositories
         IPaginatedList<Drone> GetPaginatedWithLoadedMedications(int pageIndex, int pageSize);
 
         Drone GetWithLoadedMedications(int id);
+
+        IEnumerable<Drone> GetAvailableForLoading();
 
         int TotalLoadInGrams(int id);
     }

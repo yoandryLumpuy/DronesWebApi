@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DronesWebApi.Commons.Constants;
 using DronesWebApi.Core.Domain;
+using DronesWebApi.Core.Domain.Enums;
 using DronesWebApi.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +22,13 @@ namespace DronesWebApi.Persistence.Repositories
 
         public Drone GetWithLoadedMedications(int id) => 
             DronesContext.Drones.Include(d => d.LoadedMedications).FirstOrDefault(d => d.Id == id);
+
+        public IEnumerable<Drone> GetAvailableForLoading()
+        {
+            return DronesContext.Drones.Include(d => d.LoadedMedications)
+                .Where(d => new List<EDroneState>() { EDroneState.Idle, EDroneState.Loading }.Contains(d.State)
+                        && d.BatteryCapacityInPercentage >= Constants.MinPercentageOfBatteryLevelRequired).ToList();
+        }
 
         public int TotalLoadInGrams(int id)
         {

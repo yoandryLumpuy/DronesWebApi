@@ -1,8 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DronesWebApi.Commons.Constants;
 using DronesWebApi.Commons.Exceptions;
 using DronesWebApi.Core;
 using DronesWebApi.Core.Domain;
+using DronesWebApi.Core.Domain.Enums;
 using FluentValidation;
 using MediatR;
 
@@ -24,7 +26,6 @@ namespace DronesWebApi.Models.Medication.Commands.CreateMedicationCommand
                 .Must(code => Regex.IsMatch(input: code, pattern: @"^[A-Z\\d_]+$"))
                 .WithMessage($"{nameof(CreateMedicationCommand.Code)} only accepts: upper case letters, underscore and numbers");
 
-
             RuleFor(createMedicationCommand => createMedicationCommand)
                 .Must(createMedicationCommand =>
                 {
@@ -35,6 +36,15 @@ namespace DronesWebApi.Models.Medication.Commands.CreateMedicationCommand
                     return drone != null;
 
                 }).WithMessage(createMedicationCommand => $"Drone with id: '{createMedicationCommand.DroneId.Value}' was not found")
+
+                .Must(createMedicationCommand =>
+                {
+                    if (!createMedicationCommand.DroneId.HasValue) return true;
+
+                    var drone = unitOfWork.Drones.Get(createMedicationCommand.DroneId.Value);
+
+                    return new List<EDroneState>() { EDroneState.Idle, EDroneState.Loading }.Contains(drone.State);
+                }).WithMessage(command => $"Drone with id '{command.DroneId}' is no longer in Idle or Loading state")
 
                 .Must(createMedicationCommand =>
                 {

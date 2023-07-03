@@ -28,9 +28,6 @@ namespace DronesWebApi.Models.Drone.Queries.GetDroneQuery
         {
             var entity = _unitOfWork.Drones.GetWithLoadedMedications(request.Id);
 
-            if (entity == null)
-                throw new NotFoundException(message: $"Drone with id '{request.Id}' was not found");
-
             return Task.FromResult(_mapper.Map<DroneDto>(entity));
         }
     }

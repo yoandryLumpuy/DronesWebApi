@@ -10,13 +10,13 @@ namespace DronesWebApi.Models.Medication.Commands.LoadMedicationListCommand
     {
         public LoadMedicationListCommandValidator(IUnitOfWork unitOfWork)
         {
-            RuleForEach(x => x.Commands)
+            RuleForEach(x => x.Items)
                 .SetValidator(new LoadMedicationCommandValidator(unitOfWork));
 
             RuleFor(command => command)
                 .Must(command =>
                 {
-                    var itemsGroupedByDroneId = command.Commands.GroupBy(i => i.DroneId);
+                    var itemsGroupedByDroneId = command.Items.GroupBy(i => i.DroneId);
 
                     foreach (var groupItem in itemsGroupedByDroneId)
                     {

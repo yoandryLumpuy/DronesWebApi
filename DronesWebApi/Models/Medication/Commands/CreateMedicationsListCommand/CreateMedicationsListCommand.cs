@@ -8,7 +8,7 @@ namespace DronesWebApi.Models.Medication.Commands.CreateMedicationsListCommand
 {
     public class CreateMedicationsListCommand: IRequest<CreateMedicationsListCommandResponse>
     {
-        public IEnumerable<CreateMedicationCommand.CreateMedicationCommand> Commands { get; set; }
+        public IEnumerable<CreateMedicationCommand.CreateMedicationCommand> Items { get; set; }
     }
 
     public class CreateMedicationsListCommandHandler : IRequestHandler<CreateMedicationsListCommand, CreateMedicationsListCommandResponse>
@@ -24,7 +24,7 @@ namespace DronesWebApi.Models.Medication.Commands.CreateMedicationsListCommand
         {
             var responses = new List<CreateMedicationCommandResponse>();
 
-            foreach (var command in request.Commands)
+            foreach (var command in request.Items)
             {
                 var response = await _mediator.Send(command, cancellationToken);
                 responses.Add(response);

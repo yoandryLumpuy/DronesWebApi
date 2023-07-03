@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using DronesWebApi.Commons.Configuration;
+using DronesWebApi.HostedServices;
 
 namespace DronesWebApi
 {
@@ -25,13 +27,34 @@ namespace DronesWebApi
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-            services.AddTransient(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(ValidationBehaviour<,>));
+            services.AddMediator();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped(serviceType: typeof(IRepository<>), implementationType: typeof(Repository<>));
+            services.AddPersistence();
+
+            services.AddBackgroundServices(configuration);
 
             return services;
+        }
+
+        private static void AddMediator(this IServiceCollection services)
+        {
+            services.AddMediatR(config => config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+            services.AddTransient(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(ValidationBehaviour<,>));
+        }
+
+        private static void AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<BackgroundServicesOptions>().Bind(configuration.GetSection(nameof(BackgroundServicesOptions)));
+
+            services.AddHostedService<DroneBatteryLevelCheckerBackgroundService>();
+        }
+
+        private static void AddPersistence(this IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped(serviceType: typeof(IRepository<>), implementationType: typeof(Repository<>));
         }
     }
 }

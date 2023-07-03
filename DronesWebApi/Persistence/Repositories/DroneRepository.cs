@@ -16,16 +16,16 @@ namespace DronesWebApi.Persistence.Repositories
         public IPaginatedList<Drone> GetPaginatedWithLoadedMedications(int pageIndex, int pageSize)
         {
             return PaginatedList<Drone>.CreateAsync(
-                source: DronesContext.Drones.Include(d => d.LoadedMedications).AsQueryable(), 
+                source: DronesContext.Drones.Include(d => d.LoadedMedications).Include(d => d.Model).AsQueryable(), 
                 pageIndex, pageSize).Result;
         }
 
         public Drone GetWithLoadedMedications(int id) => 
-            DronesContext.Drones.Include(d => d.LoadedMedications).FirstOrDefault(d => d.Id == id);
+            DronesContext.Drones.Include(d => d.LoadedMedications).Include(d => d.Model).FirstOrDefault(d => d.Id == id);
 
         public IEnumerable<Drone> GetAvailableForLoading()
         {
-            return DronesContext.Drones.Include(d => d.LoadedMedications)
+            return DronesContext.Drones.Include(d => d.LoadedMedications).Include(d => d.Model)
                 .Where(d => new List<EDroneState>() { EDroneState.Idle, EDroneState.Loading }.Contains(d.State)
                         && d.BatteryCapacityInPercentage >= Constants.MinPercentageOfBatteryLevelRequired).ToList();
         }

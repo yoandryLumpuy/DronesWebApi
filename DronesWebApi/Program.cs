@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DronesWebApi.Commons;
 
 namespace DronesWebApi
 {
@@ -18,6 +19,21 @@ namespace DronesWebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(builder =>
+                {
+                    builder.ClearProviders();
+                    builder.AddConsole();
+                    builder.AddDebug();
+                    builder.AddCustomLogging();
+                })
+                .ConfigureAppConfiguration((ctx, builder) => {
+                    var env = 
+
+                    builder.SetBasePath(ctx.HostingEnvironment.ContentRootPath)
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                        .AddJsonFile($"appsettings.{ctx.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                        .AddEnvironmentVariables();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

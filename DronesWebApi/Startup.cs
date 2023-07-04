@@ -19,15 +19,9 @@ namespace DronesWebApi
 {
     public class Startup
     {
-        public Startup(IHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile(path: "appsettings.json", optional: false)
-                .AddJsonFile(path: $"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

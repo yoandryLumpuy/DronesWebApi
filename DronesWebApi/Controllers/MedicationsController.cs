@@ -29,7 +29,7 @@ namespace DronesWebApi.Controllers
             return Ok(Result.Success(result));
         }
 
-        [HttpPost]
+        [HttpPost("by-list")]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.UnprocessableEntity)]
@@ -55,7 +55,7 @@ namespace DronesWebApi.Controllers
             return Ok(Result.Success(result));
         }
 
-        [HttpPost(template: "load")]
+        [HttpPost(template: "load/by-list")]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.UnprocessableEntity)]

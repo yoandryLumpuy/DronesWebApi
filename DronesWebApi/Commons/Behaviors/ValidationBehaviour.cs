@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DronesWebApi.Commons.Exceptions;
 
 namespace DronesWebApi.Commons.Behaviors
 {
@@ -29,7 +30,7 @@ namespace DronesWebApi.Commons.Behaviors
             var failures = 
                 validationResults.SelectMany(r => r.Errors).Where(f => f != null).ToList();
 
-            if (failures.Count != 0) throw new ValidationException(failures);
+            if (failures.Count != 0) throw new CustomValidationException(failures);
 
             return await next();
         }

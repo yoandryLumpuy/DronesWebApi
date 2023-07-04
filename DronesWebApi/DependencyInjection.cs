@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using DronesWebApi.Commons.Configuration;
 using DronesWebApi.HostedServices;
+using DronesWebApi.Commons.Middlewares;
 
 namespace DronesWebApi
 {
@@ -23,9 +24,11 @@ namespace DronesWebApi
                 dbContextOptionBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddTransient<ExceptionHandlingMiddleware>();
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidation();
 
             services.AddMediator();
 
@@ -34,6 +37,15 @@ namespace DronesWebApi
             services.AddBackgroundServices(configuration);
 
             return services;
+        }
+
+        private static void AddValidation(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            ValidatorOptions.Global.DefaultRuleLevelCascadeMode = CascadeMode.Stop;
+
+            ValidatorOptions.Global.DefaultClassLevelCascadeMode = CascadeMode.Stop;
         }
 
         private static void AddMediator(this IServiceCollection services)

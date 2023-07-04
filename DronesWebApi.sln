@@ -5,8 +5,6 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DronesWebApi", "DronesWebApi\DronesWebApi.csproj", "{A5C50D6D-B843-40D0-B018-45DBDB4B605F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DronesWebApi.Tests", "DronesWebApi.Tests\DronesWebApi.Tests.csproj", "{6E94DE61-604B-4871-B32F-1CC77C627C55}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{A5C50D6D-B843-40D0-B018-45DBDB4B605F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5C50D6D-B843-40D0-B018-45DBDB4B605F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5C50D6D-B843-40D0-B018-45DBDB4B605F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E94DE61-604B-4871-B32F-1CC77C627C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E94DE61-604B-4871-B32F-1CC77C627C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E94DE61-604B-4871-B32F-1CC77C627C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E94DE61-604B-4871-B32F-1CC77C627C55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,9 @@ namespace DronesWebApi.Commons.Middlewares
 
         public ExceptionHandlingMiddleware(ILogger<ExceptionHandlingMiddleware> logger) => _logger = logger;
 
+        public ExceptionHandlingMiddleware()
+        { }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
@@ -54,7 +57,7 @@ namespace DronesWebApi.Commons.Middlewares
 
                 NotFoundException => StatusCodes.Status404NotFound,
 
-                ValidationException => StatusCodes.Status422UnprocessableEntity,
+                CustomValidationException => StatusCodes.Status422UnprocessableEntity,
 
                 _ => StatusCodes.Status500InternalServerError
             };
@@ -63,7 +66,7 @@ namespace DronesWebApi.Commons.Middlewares
         {
             IDictionary<string, string[]> errors = null;
 
-            if (exception is ValidationException validationException)
+            if (exception is CustomValidationException validationException)
             {
                 errors = validationException.Errors;
             }

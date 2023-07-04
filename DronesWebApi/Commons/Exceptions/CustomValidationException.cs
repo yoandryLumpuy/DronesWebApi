@@ -5,14 +5,14 @@ using FluentValidation.Results;
 
 namespace DronesWebApi.Commons.Exceptions
 {
-    public class ValidationException : Exception
+    public class CustomValidationException : Exception
     {
-        public ValidationException() : base(message: "One or more validation failures have occurred.")
+        public CustomValidationException() : base(message: "One or more validation failures have occurred.")
         {
             Errors = new Dictionary<string, string[]>();
         }
 
-        public ValidationException(IEnumerable<ValidationFailure> failures) : this()
+        public CustomValidationException(IEnumerable<ValidationFailure> failures) : this()
         {
             Errors = failures
                 .GroupBy(e => e.PropertyName, e => e.ErrorMessage)

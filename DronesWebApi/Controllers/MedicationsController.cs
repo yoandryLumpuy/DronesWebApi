@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using System.Threading;
 using DronesWebApi.Models.Medication.Commands.CreateMedicationCommand;
 using DronesWebApi.Models.Medication.Commands.CreateMedicationsListCommand;
+using DronesWebApi.Models.Medication.Commands.LoadImageCommand;
 using DronesWebApi.Models.Medication.Commands.LoadMedicationCommand;
 using DronesWebApi.Models.Medication.Commands.LoadMedicationListCommand;
 using DronesWebApi.Models.Medication.Queries.GetLoadedMedicationsQuery;
 using DronesWebApi.Models.Medication.Queries.GetMedicationQuery;
 using DronesWebApi.Models.Medication.Queries.GetNotLoadedRegisteredMedicationsQuery;
+using Microsoft.AspNetCore.Http;
 
 namespace DronesWebApi.Controllers
 {
@@ -103,6 +105,20 @@ namespace DronesWebApi.Controllers
         public async Task<IActionResult> GetNotLoadedAsync(CancellationToken cancellation)
         {
             var result = await Mediator.Send(request: new GetNotLoadedRegisteredMedicationsQuery(), cancellation).ConfigureAwait(false);
+
+            return Ok(Result.Success(result));
+        }
+
+        [HttpGet(template: "Image/{medicationCode}")]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.UnprocessableEntity)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> PostImageAsync([FromRoute] string medicationCode, IFormFile file, CancellationToken cancellation)
+        {
+            var result = await Mediator.Send(request: new LoadImageCommand(){ File = file, MedicationCode = medicationCode }, cancellation)
+                .ConfigureAwait(false);
 
             return Ok(Result.Success(result));
         }

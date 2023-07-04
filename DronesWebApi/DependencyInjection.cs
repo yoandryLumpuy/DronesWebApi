@@ -26,6 +26,8 @@ namespace DronesWebApi
 
             services.AddTransient<ExceptionHandlingMiddleware>();
 
+            services.AddOptions<UploadFileOptions>().Bind(configuration.GetSection(nameof(UploadFileOptions)));
+
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddValidation();

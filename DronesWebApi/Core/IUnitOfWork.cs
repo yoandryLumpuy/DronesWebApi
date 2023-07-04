@@ -11,6 +11,8 @@ namespace DronesWebApi.Core
 
         IMedicationRepository Medications { get; }
 
+        IImageRepository Images { get; }
+
         int Complete();
     }
 }

@@ -14,12 +14,15 @@ namespace DronesWebApi.Persistence
 
         public IMedicationRepository Medications { get; }
 
+        public IImageRepository Images { get; }
+
         public UnitOfWork(DronesContext context)
         {
             _context = context;
             Drones = new DroneRepository(context);
             DroneModels = new DroneModelRepository(context);
             Medications = new MedicationRepository(context);
+            Images = new ImageRepository(context);
         }
 
         public int Complete()

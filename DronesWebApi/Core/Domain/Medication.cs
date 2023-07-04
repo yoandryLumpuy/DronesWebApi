@@ -16,5 +16,7 @@ namespace DronesWebApi.Core.Domain
         public DateTime? DatetimeDelivery { get; set; }
 
         public virtual Drone DeliveredByDrone { get; set; }
+
+        public virtual Image Image { get; set; }
     }
 }

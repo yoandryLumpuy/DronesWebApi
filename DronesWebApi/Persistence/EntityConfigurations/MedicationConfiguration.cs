@@ -21,7 +21,10 @@ namespace DronesWebApi.Persistence.EntityConfigurations
                 .WithMany(d => d.DeliveredMedications)
                 .IsRequired(false);
 
-
+            builder.HasOne(m => m.Image)
+                .WithOne(i => i.Medication)
+                .HasForeignKey<Image>(d => d.MedicationCode)
+                .IsRequired();
         }
     }
 }

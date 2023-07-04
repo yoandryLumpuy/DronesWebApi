@@ -12,6 +12,8 @@ namespace DronesWebApi.Persistence
 
         public DbSet<Medication> Medications { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
         public DronesContext(DbContextOptions<DronesContext> options): base(options)
         { }
         
@@ -20,6 +22,7 @@ namespace DronesWebApi.Persistence
             modelBuilder.ApplyConfiguration(new DroneConfiguration());
             modelBuilder.ApplyConfiguration(new DroneModelConfiguration());
             modelBuilder.ApplyConfiguration(new MedicationConfiguration());
+            modelBuilder.ApplyConfiguration(new ImageConfiguration());
         }
     }
 }

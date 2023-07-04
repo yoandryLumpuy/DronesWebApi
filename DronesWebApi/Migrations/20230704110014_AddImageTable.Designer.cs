@@ -3,14 +3,16 @@ using System;
 using DronesWebApi.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DronesWebApi.Migrations
 {
     [DbContext(typeof(DronesContext))]
-    partial class DronesContextModelSnapshot : ModelSnapshot
+    [Migration("20230704110014_AddImageTable")]
+    partial class AddImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,7 +97,6 @@ namespace DronesWebApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MedicationCode")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -153,9 +154,7 @@ namespace DronesWebApi.Migrations
                 {
                     b.HasOne("DronesWebApi.Core.Domain.Medication", "Medication")
                         .WithOne("Image")
-                        .HasForeignKey("DronesWebApi.Core.Domain.Image", "MedicationCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DronesWebApi.Core.Domain.Image", "MedicationCode");
 
                     b.Navigation("Medication");
                 });

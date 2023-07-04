@@ -7,21 +7,25 @@ using System;
 using DronesWebApi.Commons.Configuration;
 using DronesWebApi.Commons.Constants;
 using DronesWebApi.Core;
+using Microsoft.Extensions.DependencyInjection;
+using DronesWebApi.Persistence;
 
 namespace DronesWebApi.HostedServices
 {
     public class DroneBatteryLevelCheckerBackgroundService: BackgroundService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IServiceProvider _servicesProvider;
         private readonly ILogger<DroneBatteryLevelCheckerBackgroundService> _logger;
         private readonly BackgroundServicesOptions _options;
 
         public DroneBatteryLevelCheckerBackgroundService(
-            IUnitOfWork unitOfWork, IOptions<BackgroundServicesOptions> options, ILogger<DroneBatteryLevelCheckerBackgroundService> logger)
+            IServiceProvider servicesProvider, IOptions<BackgroundServicesOptions> options, 
+            ILogger<DroneBatteryLevelCheckerBackgroundService> logger)
         {
+
             _options = options?.Value ?? new BackgroundServicesOptions();
+            _servicesProvider = servicesProvider;
             _logger = logger;
-            _unitOfWork = unitOfWork;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -32,7 +36,13 @@ namespace DronesWebApi.HostedServices
             {
                 try
                 {
-                    foreach (var drone in _unitOfWork.Drones.GetAll())
+                    using var scope = _servicesProvider.CreateScope();
+
+                    var provider = scope.ServiceProvider;
+
+                    var unitOfWork = provider.GetRequiredService<IUnitOfWork>();
+
+                    foreach (var drone in unitOfWork.Drones.GetAll())
                         if (drone.BatteryCapacityInPercentage < Constants.MinPercentageOfBatteryLevelRequired)
                             _logger.LogInformation($"Battery level = '{drone.BatteryCapacityInPercentage}' in Drone with id '{drone.Id}' " +
                                                    $"is below required value of '{Constants.MinPercentageOfBatteryLevelRequired}'. ");

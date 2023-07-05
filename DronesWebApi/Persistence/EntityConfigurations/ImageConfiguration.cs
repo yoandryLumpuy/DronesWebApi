@@ -9,6 +9,7 @@ namespace DronesWebApi.Persistence.EntityConfigurations
         public void Configure(EntityTypeBuilder<Image> builder)
         {
             builder.HasKey(i => i.Id);
+            builder.Property(i => i.Id).ValueGeneratedOnAdd().IsRequired();
 
             builder.Property(i => i.FileName).IsRequired().HasMaxLength(100);
 

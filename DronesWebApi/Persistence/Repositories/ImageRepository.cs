@@ -1,4 +1,5 @@
-﻿using DronesWebApi.Core.Domain;
+﻿using System.Linq;
+using DronesWebApi.Core.Domain;
 using DronesWebApi.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,5 +11,8 @@ namespace DronesWebApi.Persistence.Repositories
         { }
 
         private DronesContext DronesContext => Context as DronesContext;
+
+        public Image GetImageOfMedication(string medicationCode) =>
+            DronesContext.Images.FirstOrDefault(i => i.MedicationCode == medicationCode);
     }
 }

@@ -1,36 +1,35 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using DronesWebApi.Core;
-using DronesWebApi.Core.Domain;
+﻿using DronesWebApi.Core;
 using DronesWebApi.Infrastructure.FileManager;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace DronesWebApi.Models.Medication.Commands.LoadImageCommand
+namespace DronesWebApi.Models.Image.Commands.UploadImageCommand
 {
-    public class LoadImageCommand: IRequest<LoadImageCommandResponse>
+    public class UploadImageCommand : IRequest<UploadImageCommandResponse>
     {
         public IFormFile File { get; set; }
 
         public string MedicationCode { get; set; }
     }
 
-    public class LoadImageCommandHandler : IRequestHandler<LoadImageCommand, LoadImageCommandResponse>
+    public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, UploadImageCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IFileManager _fileManager;
 
-        public LoadImageCommandHandler(IUnitOfWork unitOfWork, IFileManager fileManager)
+        public UploadImageCommandHandler(IUnitOfWork unitOfWork, IFileManager fileManager)
         {
             _fileManager = fileManager;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<LoadImageCommandResponse> Handle(LoadImageCommand request, CancellationToken cancellationToken)
+        public async Task<UploadImageCommandResponse> Handle(UploadImageCommand request, CancellationToken cancellationToken)
         {
             var fileInfo = await _fileManager.ConvertToBytesArray(request.File);
 
-            var image = new Image()
+            var image = new Core.Domain.Image()
             {
                 FileName = fileInfo.FileName,
                 ContentType = fileInfo.ContentType,
@@ -42,7 +41,7 @@ namespace DronesWebApi.Models.Medication.Commands.LoadImageCommand
 
             _unitOfWork.Complete();
 
-            return new LoadImageCommandResponse() { ImageId = image.Id, MedicationCode = request.MedicationCode };
+            return new UploadImageCommandResponse() { ImageId = image.Id, MedicationCode = request.MedicationCode };
         }
     }
 }

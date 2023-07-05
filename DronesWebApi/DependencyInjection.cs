@@ -12,6 +12,7 @@ using System.Reflection;
 using DronesWebApi.Commons.Configuration;
 using DronesWebApi.HostedServices;
 using DronesWebApi.Commons.Middlewares;
+using DronesWebApi.Infrastructure.FileManager;
 
 namespace DronesWebApi
 {
@@ -26,7 +27,7 @@ namespace DronesWebApi
 
             services.AddTransient<ExceptionHandlingMiddleware>();
 
-            services.AddOptions<UploadFileOptions>().Bind(configuration.GetSection(nameof(UploadFileOptions)));
+            services.AddFilesManagement(configuration);
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -39,6 +40,13 @@ namespace DronesWebApi
             services.AddBackgroundServices(configuration);
 
             return services;
+        }
+
+        private static void AddFilesManagement(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddOptions<UploadFileOptions>().Bind(configuration.GetSection(nameof(UploadFileOptions)));
+
+            services.AddScoped<IFileManager, FileManager>();
         }
 
         private static void AddValidation(this IServiceCollection services)

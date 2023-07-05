@@ -27,7 +27,7 @@ namespace DronesWebApi.UnitTests.Validators.Medication.Commands.CreateMedication
 
         [Theory]
         [MemberData(nameof(TestCases))]
-        public void Should_throw_error_when_at_least_one_medication_item_for_a_given_drone_exceeds_its_WeightLimitInGrams(
+        public void Should_throw_error_when_at_least_one_drone_exceeds_its_WeightLimitInGrams(
             IEnumerable<Models.Medication.Commands.CreateMedicationCommand.CreateMedicationCommand> commands,
             int failureInDroneWithId)
         {

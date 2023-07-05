@@ -27,7 +27,6 @@ namespace DronesWebApi
                     builder.AddCustomLogging();
                 })
                 .ConfigureAppConfiguration((ctx, builder) => {
-                    var env = 
 
                     builder.SetBasePath(ctx.HostingEnvironment.ContentRootPath)
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

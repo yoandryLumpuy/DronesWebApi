@@ -19,11 +19,11 @@ namespace DronesWebApi.Models.Medication.Commands.CreateMedicationCommand
             _unitOfWork = unitOfWork;
 
             RuleFor(m => m.Name)
-                .Must(name => Regex.IsMatch(input: name, pattern: @"^[a-zA-Z\\d\\-_]+$"))
+                .Must(name => Regex.IsMatch(input: name, pattern: @"^[a-zA-Z\d\-_]+$"))
                 .WithMessage($"{nameof(CreateMedicationCommand.Name)} field only accepts: letters, numbers, '-' and '_' characters");
 
             RuleFor(m => m.Code)
-                .Must(code => Regex.IsMatch(input: code, pattern: @"^[A-Z\\d_]+$"))
+                .Must(code => Regex.IsMatch(input: code, pattern: @"^[A-Z\d_]+$"))
                 .WithMessage($"{nameof(CreateMedicationCommand.Code)} only accepts: upper case letters, underscore and numbers");
 
             RuleFor(createMedicationCommand => createMedicationCommand)

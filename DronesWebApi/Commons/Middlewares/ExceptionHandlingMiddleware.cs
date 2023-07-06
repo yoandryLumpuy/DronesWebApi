@@ -70,6 +70,13 @@ namespace DronesWebApi.Commons.Middlewares
             {
                 errors = validationException.Errors;
             }
+            else
+            {
+                errors = new Dictionary<string, string[]>()
+                {
+                    ["Error"] = new string[] { exception.Message }
+                };
+            }
 
             return errors;
         }

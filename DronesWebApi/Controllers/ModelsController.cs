@@ -37,7 +37,7 @@ namespace DronesWebApi.Controllers
             return Ok(Result.Success(result));
         }
 
-        [HttpGet("{all}")]
+        [HttpGet("all")]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Result<>), (int)HttpStatusCode.UnprocessableEntity)]

@@ -12,11 +12,6 @@ namespace DronesWebApi.Models.Medication.Queries.GetMedicationQuery
 
         public int WeightInGrams { get; set; }
 
-        public DroneDto Drone { get; set; }
-
-
         public DateTime? DatetimeDelivery { get; set; }
-
-        public DroneDto DeliveredByDrone { get; set; }
     }
 }

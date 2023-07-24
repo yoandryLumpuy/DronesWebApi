@@ -10,12 +10,23 @@ namespace DronesWebApi.Commons.Logging
 {
     public static class LoggingBuilderExtensionMethods
     {
-        public static ILoggingBuilder AddCustomLogging(this ILoggingBuilder builder)
+        public static ILoggingBuilder AddCustomLogger(this ILoggingBuilder builder)
         {
-            //todo: Implement here dependency injection for custom logger provider
+            builder.AddConfiguration();
 
-            //builder.AddConfiguration();
-            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, CustomLoggingProvider>());
+            builder.Services.TryAddEnumerable(
+                ServiceDescriptor.Singleton<ILoggerProvider, CustomLoggingProvider>());
+
+            LoggerProviderOptions.RegisterProviderOptions
+                <CustomLoggerConfiguration, CustomLoggingProvider>(builder.Services);
+
+            return builder;
+        }
+
+        public static ILoggingBuilder AddColorConsoleLogger(this ILoggingBuilder builder, Action<CustomLoggerConfiguration> configure)
+        {
+            builder.AddCustomLogger();
+            builder.Services.Configure(configure);
 
             return builder;
         }

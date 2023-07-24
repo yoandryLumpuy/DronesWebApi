@@ -17,14 +17,14 @@ namespace DronesWebApi
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(builder =>
                 {
                     builder.ClearProviders();
                     builder.AddConsole();
                     builder.AddDebug();
-                    builder.AddCustomLogging();
+                    builder.AddCustomLogger();
                 })
                 .ConfigureAppConfiguration((ctx, builder) => {
 

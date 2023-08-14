@@ -72,10 +72,12 @@ namespace DronesWebApi
 
         private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<PerformanceInterceptor>();
+
             services.AddDbContext<DronesContext>((serviceProvider, dbContextOptionBuilder) =>
             {
                 dbContextOptionBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"))
-                    .AddInterceptors(new PerformanceInterceptor(serviceProvider.GetService<ILogger<PerformanceInterceptor>>()));
+                    .AddInterceptors(serviceProvider.GetRequiredService<PerformanceInterceptor>());
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

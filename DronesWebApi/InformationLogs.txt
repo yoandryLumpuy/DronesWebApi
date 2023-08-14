@@ -54,3 +54,11 @@ Hosting environment: Development
 
 [ 0: Information ]
 Content root path: C:\Users\yoa\Desktop\DronesWebApi\DronesWebApi
+
+
+[ 0: Information ]
+Checking of drones' battery level started.
+
+
+[ 0: Information ]
+Checking of drones' battery level started.

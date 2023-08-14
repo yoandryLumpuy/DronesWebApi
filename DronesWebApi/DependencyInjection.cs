@@ -12,7 +12,10 @@ using System.Reflection;
 using DronesWebApi.Commons.Configuration;
 using DronesWebApi.HostedServices;
 using DronesWebApi.Commons.Middlewares;
+using DronesWebApi.Commons.Models;
 using DronesWebApi.Infrastructure.FileManager;
+using DronesWebApi.Persistence.Interceptors;
+using Microsoft.Extensions.Logging;
 
 namespace DronesWebApi
 {
@@ -20,10 +23,7 @@ namespace DronesWebApi
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DronesContext>(dbContextOptionBuilder =>
-            {
-                dbContextOptionBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
-            });
+            services.AddPersistence(configuration);
 
             services.AddTransient<ExceptionHandlingMiddleware>();
 
@@ -34,8 +34,6 @@ namespace DronesWebApi
             services.AddValidation();
 
             services.AddMediator();
-
-            services.AddPersistence();
 
             services.AddBackgroundServices(configuration);
 
@@ -72,8 +70,14 @@ namespace DronesWebApi
             services.AddHostedService<DroneBatteryLevelCheckerBackgroundService>();
         }
 
-        private static void AddPersistence(this IServiceCollection services)
+        private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<DronesContext>((serviceProvider, dbContextOptionBuilder) =>
+            {
+                dbContextOptionBuilder.UseSqlite(configuration.GetConnectionString("DefaultConnection"))
+                    .AddInterceptors(new PerformanceInterceptor(serviceProvider.GetService<ILogger<PerformanceInterceptor>>()));
+            });
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped(serviceType: typeof(IRepository<>), implementationType: typeof(Repository<>));
